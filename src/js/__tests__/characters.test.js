@@ -95,14 +95,85 @@ test('should create new Zombie', () => {
   expect(received).toEqual(expected);
 });
 
-test('should throw error 1', () => {
+test('should throw name error 1', () => {
   expect(() => {
     Swordsman('Иннокентий1997');
   }).toThrow();
 });
 
-test('should throw error 2', () => {
+test('should throw name error 2', () => {
   expect(() => {
     Daemon('X');
+  }).toThrow();
+});
+
+test('should increase level', () => {
+  const received = new Zombie('Ромашка');
+  received.levelUp();
+
+  const expected = {
+    name: 'Ромашка',
+    health: 100,
+    level: 2,
+    type: 'Zombie',
+    attack: 48,
+    defence: 12,
+  };
+
+  expect(received).toEqual(expected);
+});
+
+test('should increase health and level', () => {
+  const received = new Daemon('Петр95');
+  received.health = 47;
+  received.level = 3;
+  received.attack = 55;
+  received.defence = 92;
+
+  received.levelUp();
+
+  const expected = {
+    name: 'Петр95',
+    health: 100,
+    level: 4,
+    type: 'Daemon',
+    attack: 66,
+    defence: 100,
+  };
+
+  expect(received).toEqual(expected);
+});
+
+test('should not increase level', () => {
+  const received = new Undead('Kitty');
+  received.health = 0;
+  expect(() => {
+    received.levelUp();
+  }).toThrow();
+});
+
+test('should count damage', () => {
+  const input = new Magician('Алина');
+  input.damage(5);
+  const received = input.health;
+  const expected = 97;
+
+  expect(received).toBe(expected);
+});
+
+test('should count damage and then throw an error', () => {
+  const input = new Swordsman('Катя');
+  input.health = 7;
+  const received = input.damage(5);
+  expect(() => {
+    received.damage(4);
+  }).toThrow();
+});
+
+test('should not count damage', () => {
+  const received = new Magician('Алина');
+  received.health = 0;
+  expect(() => {
+    received.damage(3);
   }).toThrow();
 });
